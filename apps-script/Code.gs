@@ -17,7 +17,7 @@
 const SESSIONS = ['discover', 'define', 'act'];
 const TAB = { athletes: 'Athletes', wall: 'Group Wall', settings: 'Settings', data: '_data',
               discover: '1 Discover', define: '2 Define', act: '3 Act' };
-const ATHLETE_COLS = ['ID', 'Name', 'School', 'Sport', 'Email', 'Handle', 'Joined', 'Last active',
+const ATHLETE_COLS = ['ID', 'Name', 'School', 'Sport', 'Email', 'Instagram', 'TikTok', 'Joined', 'Last active',
                       'Baseline score sheet', 'Visual playbook PDF', 'Roadmap', 'PIN hash'];
 const WALL_COLS = ['Post ID', 'Time', 'Athlete ID', 'Name', 'Kind', 'Text', 'Photo ID', 'Hidden'];
 const MATERIAL_COL = { baseline: 'Baseline score sheet', playbook: 'Visual playbook PDF', roadmap: 'Roadmap' };
@@ -27,6 +27,7 @@ const MATERIAL_COL = { baseline: 'Baseline score sheet', playbook: 'Visual playb
 function setup() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   ensureTab_(TAB.athletes, ATHLETE_COLS);
+  migrateAthleteCols_();
   ensureTab_(TAB.wall, WALL_COLS);
   ensureTab_(TAB.data, ['Athlete ID', 'Session', 'JSON', 'Updated']).hideSheet();
   SESSIONS.forEach(s => ensureTab_(TAB[s], ['Name', 'School', 'Sport', 'Email', 'Updated']));
@@ -79,6 +80,8 @@ function join(p) {
     const email = String(p.email || '').trim().toLowerCase();
     const pin = String(p.pin || '').trim();
     if (!email || !/^\d{4}$/.test(pin) || !p.name) throw new Error('Name, email and a 4-digit PIN are required.');
+    if (!cleanHandle_(p.instagram)) throw new Error('Add your Instagram handle.');
+    migrateAthleteCols_();
     const sh = sheet_(TAB.athletes);
     const rows = sh.getDataRange().getValues();
     const c = colIndex_(rows[0]);
@@ -90,10 +93,12 @@ function join(p) {
     }
     const id = Utilities.getUuid().slice(0, 8);
     const now = new Date();
-    const row = ATHLETE_COLS.map(h => ({ 'ID': id, 'Name': p.name, 'School': p.school || '', 'Sport': p.sport || '',
-      'Email': email, 'Handle': p.handle || '', 'Joined': now, 'Last active': now, 'PIN hash': hash_(pin) })[h] || '');
-    sh.appendRow(row);
-    return session_(row, colIndex_(ATHLETE_COLS), pin);
+    const ig = cleanHandle_(p.instagram), tt = cleanHandle_(p.tiktok);
+    const vals = { 'ID': id, 'Name': p.name, 'School': p.school || '', 'Sport': p.sport || '', 'Email': email,
+      'Instagram': igLink_(ig), 'TikTok': tt ? ttLink_(tt) : '', 'Joined': now, 'Last active': now, 'PIN hash': hash_(pin) };
+    sh.appendRow(rows[0].map(h => (h in vals) ? vals[h] : ''));
+    const shown = rows[0].map(h => h === 'Instagram' ? '@' + ig : h === 'TikTok' ? (tt ? '@' + tt : '') : ((h in vals) ? vals[h] : ''));
+    return session_(shown, c, pin);
   });
 }
 
@@ -159,6 +164,7 @@ function getWall() { return wall_(false); }
 
 function hostOverview(key) {
   hostAuth_(key);
+  migrateAthleteCols_();
   const rows = sheet_(TAB.athletes).getDataRange().getValues(), c = colIndex_(rows[0]);
   const data = sheet_(TAB.data).getDataRange().getValues().slice(1);
   const athletes = rows.slice(1).map(r => {
@@ -167,7 +173,7 @@ function hostOverview(key) {
       try { prog[d[1]] = Object.values(JSON.parse(d[2])).filter(v => v && (typeof v !== 'object' || Object.keys(v).length)).length; } catch (e) {}
     });
     return { id: r[c['ID']], name: r[c['Name']], school: r[c['School']], sport: r[c['Sport']], email: r[c['Email']],
-      handle: r[c['Handle']], lastActive: r[c['Last active']] ? new Date(r[c['Last active']]).toISOString() : '',
+      instagram: bare_(r[c['Instagram']]), tiktok: bare_(r[c['TikTok']]), lastActive: r[c['Last active']] ? new Date(r[c['Last active']]).toISOString() : '',
       progress: prog, materials: materials_(r, c) };
   });
   return { open: openSessions_(), athletes, wall: wall_(true), sheetUrl: SpreadsheetApp.getActiveSpreadsheet().getUrl() };
@@ -214,7 +220,7 @@ function session_(row, c, pin) {
   sheet_(TAB.data).getDataRange().getValues().slice(1).filter(d => d[0] === id)
     .forEach(d => { try { answers[d[1]] = JSON.parse(d[2]); } catch (e) {} });
   return { athlete: { id, name: row[c['Name']], school: row[c['School']], sport: row[c['Sport']],
-                      email: row[c['Email']], handle: row[c['Handle']] },
+                      email: row[c['Email']], instagram: bare_(row[c['Instagram']]), tiktok: bare_(row[c['TikTok']]) },
            pin, answers, materials: materials_(row, c), open: openSessions_() };
 }
 
@@ -255,6 +261,39 @@ function saveDataUrl_(dataUrl, name, athleteName) {
   const file = folder.createFile(blob);
   try { file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW); } catch (e) {}
   return file;
+}
+
+/* Instagram (required) + TikTok (optional) as clickable links in the Athletes tab.
+   Also upgrades older sheets that had a single "Handle" column. */
+function cleanHandle_(v) {
+  return String(v || '').trim().replace(/^https?:\/\/(www\.)?(instagram|tiktok)\.com\/@?/i, '')
+    .replace(/^@/, '').replace(/[/?#].*$/, '').replace(/[^A-Za-z0-9._]/g, '');
+}
+function bare_(v) { return cleanHandle_(v); }
+function igLink_(h) { return h ? '=HYPERLINK("https://www.instagram.com/' + h + '/","@' + h + '")' : ''; }
+function ttLink_(h) { return h ? '=HYPERLINK("https://www.tiktok.com/@' + h + '","@' + h + '")' : ''; }
+function migrateAthleteCols_() {
+  const sh = sheet_(TAB.athletes);
+  let header = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
+  const hi = header.indexOf('Handle');
+  if (hi >= 0 && header.indexOf('Instagram') < 0) sh.getRange(1, hi + 1).setValue('Instagram');
+  header = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
+  if (header.indexOf('TikTok') < 0) {
+    const at = header.indexOf('Instagram') + 2;
+    sh.insertColumnAfter(at - 1); sh.getRange(1, at).setValue('TikTok').setFontWeight('bold');
+  }
+  header = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
+  ['Instagram', 'TikTok'].forEach(col => {
+    const ci = header.indexOf(col) + 1, n = sh.getLastRow() - 1;
+    if (ci < 1 || n < 1) return;
+    const rng = sh.getRange(2, ci, n, 1), f = rng.getFormulas(), v = rng.getValues();
+    const out = v.map((r, i) => {
+      if (f[i][0]) return [f[i][0]];
+      const h = cleanHandle_(r[0]);
+      return [h ? (col === 'Instagram' ? igLink_(h) : ttLink_(h)) : ''];
+    });
+    rng.setFormulas(out);
+  });
 }
 
 function openSessions_() {
