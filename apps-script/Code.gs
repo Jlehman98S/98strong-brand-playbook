@@ -62,12 +62,12 @@ function doPost(e) {
   return ContentService.createTextOutput(JSON.stringify(out)).setMimeType(ContentService.MimeType.JSON);
 }
 
-// Optional: also serves the site straight from Apps Script if you add an HTML file named Index.
+// Opening the web app URL in a browser shows whether the backend is running.
 function doGet() {
-  return HtmlService.createHtmlOutputFromFile('Index')
-    .setTitle('98Strong Personal Brand Playbook')
-    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  const ok = !!SpreadsheetApp.getActiveSpreadsheet().getSheetByName(TAB.athletes);
+  return ContentService.createTextOutput(JSON.stringify({
+    ok: true, status: '98Strong Playbook backend is running', setupDone: ok
+  })).setMimeType(ContentService.MimeType.JSON);
 }
 
 /* ---------------- athlete API ---------------- */
