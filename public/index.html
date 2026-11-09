@@ -166,7 +166,7 @@ const SESSIONS = [
       {id:"intro",type:"textarea",label:"Your introduction",share:"Introduction"}],
       example:"“I’m a swimmer learning to cook my family’s recipes. I call home for help, then photograph the meals that turn out well.”"},
     {title:"Story ideas", hint:"Jot an idea for at least two of these.", fields:[
-      {id:"s_details",type:"textarea",label:"The little details",sub:"A few photos of the details that make your day yours.",share:"Story idea · The little details"},
+      {id:"s_details",type:"textarea",label:"The little details",sub:"A few photo ideas of the details that make your day yours.",share:"Story idea · The little details"},
       {id:"s_learning",type:"textarea",label:"Something you're learning",sub:"A first attempt at something and what surprised you.",share:"Story idea · Something I'm learning"},
       {id:"s_routine",type:"textarea",label:"An everyday routine",sub:"A daily or weekly habit and why it matters to you.",share:"Story idea · An everyday routine"}]},
     {title:"Your values. Your goal.", private:true, fields:[
@@ -196,8 +196,11 @@ const SESSIONS = [
       {id:"theme1",type:"text",label:"Content theme 1"},
       {id:"theme2",type:"text",label:"Content theme 2"},
       {id:"ideas",type:"list",n:6,label:"Six story ideas",sub:"Options for the coming weeks."}]},
-    {title:"Your weekly commitment", cream:true, hint:"A plan you can keep. Publishing is your choice.", fields:[
-      {id:"commit",type:"fill",label:"Weekly commitment",lines:[["This week, I will","will"],["I will work on it on","when"],["My weekly work blocks are","blocks"],["I will ask","who","for feedback on","what"]]},
+    {title:"Your weekly commitment", cream:true, hint:"Set a goal you can actually keep. Pick one small, specific piece of work you can finish this week, like one photo and a short caption. Plan it around practice, class, travel and rest, not on top of them. Starting small and finishing beats planning big and skipping. Private drafts count, and publishing is always your choice.", fields:[
+      {id:"c_will",type:"textarea",label:"This week, I will…",sub:"One specific piece of work, like “Post one photo from my Sunday family dinner with a two-line caption.”"},
+      {id:"c_when",type:"textarea",label:"I will work on it on…",sub:"List the days and times you're actually free this week, like “Tuesday 8:00-8:30pm after study hall, Saturday 10-11am before lift.”"},
+      {id:"c_blocks",type:"textarea",label:"My weekly work blocks are…",sub:"A repeating time each week, about 30 minutes to create and 15 minutes to improve."},
+      {id:"c_feedback",type:"textarea",label:"I will ask for feedback from…",sub:"Who you'll ask (a teammate, a friend, your 98Strong rep) and what you want their feedback on."},
       {id:"feedbackDate",type:"date",label:"First feedback / check-in date"}]},
     {title:"Your learning focus", hint:"Choose one with your lead and apply it to a piece of work this month.", fields:[
       {id:"focus",type:"chips",label:"This month's focus",options:["Content + Audience","Brand Relationships","Partnership Delivery","My choice"]},
