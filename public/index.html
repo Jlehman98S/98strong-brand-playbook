@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Personal Brand Playbook</title>
+<link rel="icon" href="favicon.png">
+<script src="config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,700;1,800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0b0b;--panel:#151515;--cream:#f7ecdc;--gold:#d9a330;--text:#f4efe7;--muted:#a9a29a;--line:#2a2a2a;--ink:#141414;--ok:#7fc79a}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 Inter,system-ui,sans-serif}
+h1,h2,h3,.disp{font-family:"Barlow Condensed",Impact,sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;letter-spacing:.01em;margin:0}
+header{position:sticky;top:0;z-index:5;background:rgba(11,11,11,.95);border-bottom:1px solid var(--line)}
+.bar{max-width:920px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
+.logo{height:38px;width:auto;display:block}
+.who{margin-left:auto;color:var(--muted);font-size:13px;text-align:right;line-height:1.3}
+.who a{color:var(--gold);cursor:pointer}
+nav{max-width:920px;margin:0 auto;padding:0 16px 10px;display:flex;gap:8px;overflow-x:auto}
+nav button{flex:1;min-width:96px;background:var(--panel);color:var(--muted);border:1px solid var(--line);padding:7px 10px;border-radius:4px;cursor:pointer;font:inherit;font-size:12px;text-align:left}
+nav button .disp{display:block;font-size:19px;color:var(--text)}
+nav button[aria-current=true]{border-color:var(--gold);background:#1d1709}
+nav button[aria-current=true] .disp{color:var(--gold)}
+nav button:disabled{opacity:.45;cursor:default}
+main{max-width:920px;margin:0 auto;padding:20px 16px 90px}
+.hero{padding:22px 0 6px}
+.eyebrow{color:var(--gold);font:italic 800 15px "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.04em}
+.hero h1{font-size:clamp(46px,10vw,80px);line-height:.95;margin:6px 0}
+.hero p{color:var(--muted);font-weight:300;font-size:19px;margin:6px 0 12px}
+.rule{height:2px;background:var(--gold);width:min(420px,100%);margin:14px 0}
+.agenda{display:grid;gap:4px;font-size:14px}.agenda b{display:inline-block;min-width:92px}
+.card{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:4px;padding:22px;margin:22px 0}
+.card.cream{background:var(--cream);color:var(--ink);border-color:var(--cream);border-top-color:var(--gold)}
+.card.cream .hint,.card.cream label .sub,.card.cream .status{color:#6b625a}
+.card h2{font-size:32px;line-height:1}
+.num{color:var(--gold);font-size:15px}
+.hint{color:var(--muted);font-size:14px;margin:6px 0 14px}
+.field{margin:16px 0}
+label{display:block;font-weight:600;margin-bottom:6px}
+label .sub{display:block;font-weight:400;font-size:13px;color:var(--muted)}
+textarea,input[type=text],input[type=email],input[type=date],input[type=url],input[inputmode=numeric],select{width:100%;background:#0f0f0f;color:var(--text);border:1px solid #333;border-radius:4px;padding:10px 12px;font:inherit}
+.cream textarea,.cream input,.cream select{background:#fffaf2;color:var(--ink);border-color:#d8c9b2}
+textarea{min-height:84px;resize:vertical}
+textarea:focus,input:focus,select:focus{outline:2px solid var(--gold);outline-offset:1px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{font-weight:400;margin:0;cursor:pointer;border:1px solid #3a3a3a;border-radius:999px;padding:7px 14px;user-select:none;position:relative}
+.cream .chips label{border-color:#cdbb9f}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips label:has(input:checked){background:var(--gold);color:#111;border-color:var(--gold);font-weight:600}
+.chips label:has(input:focus-visible){outline:2px solid var(--gold);outline-offset:2px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.example{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;font-style:italic;color:var(--muted)}
+.cream .example{color:#5b534b}
+.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.tile{background:#0f0f0f;border:1px solid #2f2f2f;border-radius:4px;overflow:hidden;display:flex;flex-direction:column}
+.ph{position:relative;aspect-ratio:1/1;background:#191919;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:13px;text-align:center;border-bottom:1px solid #2f2f2f}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph .n{position:absolute;top:6px;left:8px;font:italic 800 20px "Barlow Condensed";color:var(--gold);text-shadow:0 1px 3px #000}
+.ph .plus{font:italic 800 34px "Barlow Condensed";color:var(--gold);display:block}
+.ph input{display:none}
+.tile .body{padding:8px;display:grid;gap:6px}
+.tile select,.tile input[type=text]{padding:7px 9px;font-size:14px}
+.count{font:italic 800 22px "Barlow Condensed";color:var(--gold)}
+.btn{background:var(--gold);color:#111;border:0;border-radius:4px;padding:11px 18px;font:italic 800 18px "Barlow Condensed",sans-serif;text-transform:uppercase;cursor:pointer;letter-spacing:.03em}
+.btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+.btn.sm{padding:6px 10px;font-size:14px}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.done{background:transparent;color:var(--ok);border:1px solid var(--ok)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.status{font-size:13px;color:var(--muted)}
+.private{font-size:12px;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-top:6px}
+.cream .private{color:#8a5f10}
+.fill{display:grid;gap:10px}
+.fill .line{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.fill .line input{flex:1;min-width:170px}
+.join{max-width:500px;margin:4vh auto}
+.tabs{display:flex;gap:6px;margin-bottom:-1px}
+.tabs button{background:none;border:1px solid var(--line);border-bottom:none;color:var(--muted);padding:8px 14px;border-radius:4px 4px 0 0;cursor:pointer;font:inherit;font-size:14px}
+.tabs button[aria-selected=true]{background:var(--panel);color:var(--gold);border-color:var(--gold)}
+.err{color:#ff8a7a;font-size:14px;min-height:20px}
+.pill{position:fixed;right:14px;bottom:14px;background:#1b1b1b;border:1px solid var(--line);color:var(--muted);font-size:12px;padding:6px 12px;border-radius:999px;z-index:9}
+.pill.ok{color:var(--ok);border-color:#2f4a39}
+.toast{position:fixed;left:50%;bottom:56px;transform:translateX(-50%);background:var(--gold);color:#111;padding:10px 18px;border-radius:4px;font-weight:600;display:none;z-index:10;max-width:90vw}
+.wall{columns:3 240px;column-gap:14px}
+.post{break-inside:avoid;background:var(--panel);border:1px solid var(--line);border-radius:4px;margin:0 0 14px;overflow:hidden}
+.post img{width:100%;display:block}
+.post .pb{padding:12px 14px}
+.post .k{font:italic 800 14px "Barlow Condensed";color:var(--gold);text-transform:uppercase;letter-spacing:.05em}
+.post .t{white-space:pre-wrap;margin:4px 0 8px}
+.post .by{font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;align-items:center}
+.post.hidden{opacity:.4}
+.linkbtn{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;font:inherit;font-size:12px;padding:0}
+.present .post .t{font-size:22px}.present .wall{columns:3 320px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--gold);font:italic 800 15px "Barlow Condensed";text-transform:uppercase}
+.mat{display:grid;gap:6px}
+.mat .m{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:13px}
+.mat a,.matlink{color:var(--gold)}
+.empty{color:var(--muted);text-align:center;padding:40px 10px;border:1px dashed var(--line);border-radius:4px}
+.lock{font-size:13px;color:var(--muted)}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:30px 16px}
+@media (max-width:560px){.card{padding:16px}.who .meta{display:none}.logo{height:32px}table{font-size:13px}.hide-sm{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar"><img class="logo" alt="98 Strong" src="data:image/png;base64,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"><div class="eyebrow" style="color:var(--muted)">Personal Brand Playbook</div><div class="who" id="who"></div></div>
+  <nav id="nav" hidden></nav>
+</header>
+<main id="app"><p class="status" style="text-align:center;padding:60px 0">Loading…</p></main>
+<div class="toast" id="toast"></div>
+<div class="pill" id="pill" hidden></div>
+<footer>98Strong Student Athlete Development</footer>
+
+<script>
+/* ================= PLAYBOOK CONTENT ================= */
+const SESSIONS = [
+ { id:"discover", n:"01", name:"Discover", tag:"The person beyond the sport", leave:"A mood board and one personal goal.",
+   agenda:[["5-10 min","Baseline + Personal Context"],["10 min","Reflection + One Goal"],["10-20 min","Your Mood Board"],["5 min","Save + Close"]],
+   steps:[
+    {title:"Beyond your sport", hint:"What would someone miss if they only knew your sport?", fields:[
+      {id:"people",type:"textarea",label:"Your people",sub:"Family, friends, teammates, mentors, community."},
+      {id:"interests",type:"textarea",label:"Your interests",sub:"What you do and care about outside of training."},
+      {id:"roots",type:"textarea",label:"Your roots",sub:"Where you're from, traditions, what shaped you."}]},
+    {title:"Your own starting point", cream:true, private:true, hint:"A quick reflection before you begin. It sits alongside your baseline score sheet.", fields:[
+      {id:"r1",type:"chips",label:"01 · Can I describe myself beyond sport?",options:["Still figuring it out","Somewhat clear","Clear"]},
+      {id:"r2",type:"chips",label:"02 · Do I know what I want people to see?",options:["Still figuring it out","Somewhat clear","Clear"]},
+      {id:"r3",type:"chips",label:"03 · Am I ready to try one small thing?",options:["Not yet","With some help","Ready to try"]}]},
+    {title:"Two honest answers", private:true, hint:"Choose two. Write a few honest notes.", fields:[
+      {id:"honest",type:"pick2",label:"Two honest answers",options:["What do you choose to do in your free time?","What are you proud of beyond your sport?","Who has earned your respect? What did they do?","What do people close to you ask you for help with?"]}]},
+    {title:"Values and personal goals", private:true, fields:[
+      {id:"notice",type:"textarea",label:"What you notice",sub:"Name one or two things that show up in your personal choices, with one real example."},
+      {id:"goal1",type:"textarea",label:"What you want to try",sub:"One thing you want to feel clearer about or more comfortable doing. Keep it within your control."}],
+      example:"“I want to feel more comfortable talking about my interest in photography.”"},
+    {title:"Your mood board", hint:"8 to 12 choices: photos, screenshots, objects, or short phrases that feel like you. Tap a square to add a photo from your phone. Ideas: what you love (sport, style, music, food), who shapes you (people, places, community), what surprises people, a future ambition, a place to explore, a skill to learn.", fields:[
+      {id:"board",type:"board",label:"Mood board",min:8,max:12,cats:["Home","Music","Food","Outdoors","Style","Interests","Learning","Future","People","Places","Community","Surprise"]}]},
+    {title:"Why these choices matter", hint:"Choose three items from your board. Explain why each one belongs. Share your favorite with the group.", fields:[
+      {id:"why1",type:"text",label:"Choice 1",share:"Why it's on my board",ph:"Home: “Family recipes keep me connected to home.”"},
+      {id:"why2",type:"text",label:"Choice 2",share:"Why it's on my board",ph:"Reading: “Books give me space to slow down and think.”"},
+      {id:"why3",type:"text",label:"Choice 3",share:"Why it's on my board",ph:"Travel: “New places help me see things with fresh eyes.”"}]}
+   ],
+   close:["Save your board and three explanations.","Keep your baseline and personal goal.","Bring them back on your next session date."]},
+ { id:"define", n:"02", name:"Define", tag:"Your story, in your own words", leave:"Your results ready for 98Strong.",
+   agenda:[["5 min","Revisit Your Board"],["10-15 min","Introduction + Story Ideas"],["10-15 min","Values, Goals + Boundaries"],["5-10 min","Review + Submit"]],
+   steps:[
+    {title:"Revisit your board", hint:"Your Session 1 board is in the Discover tab. Update it before you write your introduction.", fields:[
+      {id:"keep",type:"textarea",label:"Keep",sub:"Which choices still feel like you?"},
+      {id:"change",type:"textarea",label:"Change",sub:"What would you add or replace?"}]},
+    {title:"An introduction in your own words", hint:"Write two or three sentences. Read them aloud. Keep your own words.", fields:[
+      {id:"know",type:"text",label:"What should someone know?",sub:"An interest or part of your life you want to express."},
+      {id:"believable",type:"text",label:"What makes it believable?",sub:"One specific detail from something you actually do."},
+      {id:"intro",type:"textarea",label:"Your introduction",share:"Introduction"}],
+      example:"“I’m a swimmer learning to cook my family’s recipes. I call home for help, then photograph the meals that turn out well.”"},
+    {title:"Story ideas", hint:"Jot an idea for at least two of these.", fields:[
+      {id:"s_details",type:"textarea",label:"The little details",sub:"A few photos of the details that make your day yours.",share:"Story idea · The little details"},
+      {id:"s_learning",type:"textarea",label:"Something you're learning",sub:"A first attempt at something and what surprised you.",share:"Story idea · Something I'm learning"},
+      {id:"s_routine",type:"textarea",label:"An everyday routine",sub:"A daily or weekly habit and why it matters to you.",share:"Story idea · An everyday routine"}]},
+    {title:"Your values. Your goal.", private:true, fields:[
+      {id:"value1",type:"text",label:"Value 1 + a real example",sub:"What matters enough to shape your choices?"},
+      {id:"value2",type:"text",label:"Value 2 + a real example"},
+      {id:"goal2",type:"textarea",label:"Goal",sub:"What do you want your personal brand to help you achieve?"},
+      {id:"progress",type:"text",label:"What would progress look like?"}]},
+    {title:"Your boundaries", cream:true, private:true, hint:"An interest can matter without becoming content.", fields:[
+      {id:"share",type:"textarea",label:"Something I might share",sub:"A creative project. A recipe. An everyday observation."},
+      {id:"keepPrivate",type:"textarea",label:"Something I want to keep private",sub:"A family detail. A relationship. A personal experience."}]},
+    {title:"Your results for 98Strong", hint:"This is what 98Strong uses to create your visual PDF and roadmap.", review:true, fields:[]}
+   ],
+   close:["Review your work and results.","98Strong creates your visual PDF and roadmap.","Bring your original score sheet to Session 3."]},
+ { id:"act", n:"03", name:"Act", tag:"Your story becomes a plan", leave:"A weekly plan, first action and feedback dates.",
+   agenda:[["5-10 min","Review Your Visual PDF"],["10 min","Compare with Your Baseline"],["10-15 min","Weekly Plan + Profile Priorities"],["5-10 min","First Action + Check-In Date"]],
+   steps:[
+    {title:"Your visual playbook", hint:"Open it from the My Playbook tab. Does this feel like you?", fields:[
+      {id:"feels",type:"chips",label:"Overall, my visual playbook feels…",options:["Not me yet","Mostly me","Exactly me"]},
+      {id:"pdfChanges",type:"textarea",label:"Words or visuals to change",sub:"Who you are · What matters · Your direction"}]},
+    {title:"Your baseline + your playbook", private:true, hint:"Find one gap between where you started and where you want to go.", fields:[
+      {id:"visible",type:"textarea",label:"What is already visible on your profile?"},
+      {id:"missing",type:"textarea",label:"What is missing or unclear?"},
+      {id:"express",type:"textarea",label:"What should your profile and future work express?"},
+      {id:"gap",type:"text",label:"The one gap I'll work on first"}]},
+    {title:"Your first week", hint:"Use your board, interests and goals.", fields:[
+      {id:"bio",type:"textarea",label:"Updated bio draft",sub:"Make it sound like you."},
+      {id:"theme1",type:"text",label:"Content theme 1"},
+      {id:"theme2",type:"text",label:"Content theme 2"},
+      {id:"ideas",type:"list",n:6,label:"Six story ideas",sub:"Options for the coming weeks."}]},
+    {title:"Your weekly commitment", cream:true, hint:"A plan you can keep. Publishing is your choice.", fields:[
+      {id:"commit",type:"fill",label:"Weekly commitment",lines:[["This week, I will","will"],["I will work on it on","when"],["My weekly work blocks are","blocks"],["I will ask","who","for feedback on","what"]]},
+      {id:"feedbackDate",type:"date",label:"First feedback / check-in date"}]},
+    {title:"Your learning focus", hint:"Choose one with your lead and apply it to a piece of work this month.", fields:[
+      {id:"focus",type:"chips",label:"This month's focus",options:["Content + Audience","Brand Relationships","Partnership Delivery","My choice"]},
+      {id:"focusNote",type:"text",label:"Notes"}]}
+   ],
+   close:["Your documents: baseline, reviewed visual playbook and roadmap.","Your first action: a first task and weekly work blocks.","Your support: your school contact and agreed feedback dates."]}
+];
+const MATERIALS=[["baseline","Baseline score sheet"],["playbook","Visual playbook PDF"],["roadmap","Roadmap"]];
+
+/* ================= BACKEND (Apps Script, or a local demo) ================= */
+const GAS = typeof google!=="undefined" && google.script && google.script.run;
+const API_URL = (window.PLAYBOOK_API_URL||"").trim();
+const LIVE = GAS || !!API_URL;
+async function api(fn,...args){
+  if(GAS) return new Promise((res,rej)=>google.script.run.withSuccessHandler(res).withFailureHandler(e=>rej(new Error(e&&e.message||e)))[fn](...args));
+  if(API_URL){let r;
+    try{r=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({fn,args})}).then(x=>x.json())}
+    catch(e){throw new Error("Can't reach 98Strong right now. Check your connection and try again.")}
+    if(!r.ok)throw new Error(r.error||"Something went wrong.");return r.data}
+  return new Promise((res,rej)=>setTimeout(()=>{try{res(MOCK[fn](...args))}catch(e){rej(e)}},150));
+}
+const MOCK=(()=>{const K="pbp-demo-db";
+  const db=()=>{try{return JSON.parse(localStorage.getItem(K))||null}catch(e){return null}};
+  let d=db()||{athletes:[],data:{},wall:[],open:["discover"]};
+  const w=()=>{try{localStorage.setItem(K,JSON.stringify(d))}catch(e){}};
+  const sess=a=>({athlete:a,pin:a.pin,answers:d.data[a.id]||{},materials:a.materials||{},open:d.open});
+  const auth=(id,pin)=>{const a=d.athletes.find(x=>x.id===id);if(!a||a.pin!==pin)throw new Error("That PIN does not match.");return a};
+  return {
+   getConfig:()=>({open:d.open}),
+   join:p=>{const e=(p.email||"").toLowerCase();if(!p.name||!e||!/^\d{4}$/.test(p.pin))throw new Error("Name, email and a 4-digit PIN are required.");
+     let a=d.athletes.find(x=>x.email===e);if(a){if(a.pin!==p.pin)throw new Error("That email has already joined. Enter the PIN you chose to get back in.");return sess(a)}
+     a={id:Math.random().toString(36).slice(2,10),name:p.name,school:p.school,sport:p.sport,email:e,handle:p.handle,pin:p.pin,materials:{}};d.athletes.push(a);w();return sess(a)},
+   login:(e,pin)=>{const a=d.athletes.find(x=>x.email===String(e).toLowerCase());if(!a)throw new Error("We could not find you. Join with your name and email first.");return sess(auth(a.id,pin))},
+   saveAnswers:(id,pin,s,ans)=>{auth(id,pin);(d.data[id]=d.data[id]||{})[s]=ans;d.athletes.find(x=>x.id===id).last=new Date().toISOString();w();return{savedAt:new Date().toISOString()}},
+   uploadPhoto:(id,pin,url)=>{auth(id,pin);return{id:url}},
+   postToWall:(id,pin,kind,text,photoId)=>{const a=auth(id,pin);d.wall.unshift({id:Math.random().toString(36).slice(2),time:new Date().toISOString(),athleteId:id,name:a.name,kind,text,photoId,hidden:false});w();return{}},
+   removeMyPost:(id,pin,pid)=>{auth(id,pin);const p=d.wall.find(x=>x.id===pid&&x.athleteId===id);if(p)p.hidden=true;w();return true},
+   getWall:()=>d.wall.filter(p=>!p.hidden),
+   hostOverview:()=>({open:d.open,sheetUrl:"",wall:d.wall,athletes:d.athletes.map(a=>({...a,lastActive:a.last||"",progress:Object.fromEntries(Object.entries(d.data[a.id]||{}).map(([k,v])=>[k,Object.values(v).filter(x=>x&&(typeof x!=="object"||Object.keys(x).length)).length])),materials:a.materials||{}}))}),
+   hostSetOpen:(k,l)=>{d.open=l;w();return l},
+   hostSetHidden:(k,pid,h)=>{const p=d.wall.find(x=>x.id===pid);if(p)p.hidden=h;w();return true},
+   hostSetMaterial:(k,aid,type,url,fn,link)=>{const a=d.athletes.find(x=>x.id===aid);a.materials=a.materials||{};a.materials[type]=url||link;w();return a.materials[type]}
+  }})();
+
+/* ================= STATE ================= */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const LS="pbp-live-v2";
+const ls={get(){try{return JSON.parse(localStorage.getItem(LS))||{}}catch(e){return{}}},set(v){try{localStorage.setItem(LS,JSON.stringify(v))}catch(e){}}};
+let S={me:null,pin:null,answers:{},materials:{},open:["discover"],view:"discover",shared:{}};
+let hostKey="";
+function toast(m){const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(t._t);t._t=setTimeout(()=>t.style.display="none",2800)}
+function pill(m,ok){const p=$("#pill");p.hidden=false;p.textContent=m;p.className="pill"+(ok?" ok":"")}
+function photoSrc(id){return !id?"":id.startsWith("data:")?id:"https://drive.google.com/thumbnail?id="+encodeURIComponent(id)+"&sz=w800"}
+const ans=(s,id)=>(S.answers[s]||{})[id];
+function setAns(s,id,v){(S.answers[s]=S.answers[s]||{})[id]=v;queueSave(s)}
+function cache(){ls.set({me:S.me,pin:S.pin,answers:S.answers,view:S.view,shared:S.shared})}
+
+/* autosave: per session, debounced */
+const saveTimers={};let pending=0;
+function queueSave(s){cache();pill("Saving…");clearTimeout(saveTimers[s]);saveTimers[s]=setTimeout(()=>doSave(s),1200)}
+async function doSave(s){pending++;
+  try{await api("saveAnswers",S.me.id,S.pin,s,S.answers[s]||{},flatten(s));pending--;if(!pending)pill("All changes saved ✓",true)}
+  catch(e){pending--;pill("Not saved yet. Retrying…");setTimeout(()=>queueSave(s),5000)}}
+function flatten(sid){const out={},sess=SESSIONS.find(x=>x.id===sid);
+  sess.steps.forEach((st,si)=>st.fields.forEach(f=>{const v=ans(sid,f.id);const col=`${si+1}. ${f.label||st.title}`;let t="";
+    if(v==null)t="";
+    else if(f.type==="pick2")t=Object.entries(v).map(([i,x])=>f.options[i]+" — "+x).join("\n");
+    else if(f.type==="board")t=v.filter(x=>x&&(x.what||x.photo)).map((x,i)=>`${i+1}. ${x.cat||"—"}: ${x.what||""}${x.photo?(x.photo.startsWith("data:")?" [photo]":" https://drive.google.com/file/d/"+x.photo+"/view"):""}`).join("\n");
+    else if(f.type==="list")t=v.filter(Boolean).map((x,i)=>`${i+1}. ${x}`).join("\n");
+    else if(f.type==="fill")t=Object.entries(v).map(([k,x])=>k+": "+x).join("\n");
+    else t=v;out[col]=t}));return out}
+
+/* ================= BOOT ================= */
+function getParams(){return new Promise(r=>{if(GAS&&google.script.url)google.script.url.getLocation(l=>r(l.parameter||{}));else r(Object.fromEntries(new URLSearchParams(location.search)))})}
+(async function boot(){
+  if(!LIVE&&!document.getElementById("demoBar")){const d=document.createElement("div");d.id="demoBar";d.style.cssText="background:#d9a330;color:#111;text-align:center;font-size:13px;padding:6px 12px;font-weight:600";d.textContent="Demo mode: answers stay in this browser. Add the Apps Script URL to config.js to go live.";document.body.prepend(d)}
+  const p=await getParams();
+  if(p.host){hostKey=p.host;return renderHost()}
+  const c=ls.get();
+  if(c.me&&c.pin){S={...S,...c};
+    try{const r=await api("login",c.me.email,c.pin);adopt(r)}catch(e){try{const cf=await api("getConfig");S.open=cf.open}catch(_){}}
+    return render()}
+  renderJoin();
+})();
+function adopt(r){
+  S.me=r.athlete;S.pin=r.pin;S.materials=r.materials||{};S.open=r.open||["discover"];
+  // server copy wins unless this device has unsaved newer edits
+  const local=S.answers||{};S.answers={...local,...(r.answers||{})};
+  if(!S.open.includes(S.view)&&S.view!=="wall"&&S.view!=="mine")S.view=S.open[0]||"wall";
+  cache();
+}
+
+/* ================= JOIN ================= */
+function renderJoin(mode="new",err=""){
+  $("#nav").hidden=true;$("#who").textContent="";
+  $("#app").innerHTML=`<section class="join"><div class="eyebrow">98Strong Student Athlete Development</div>
+  <h1 style="font-size:clamp(46px,11vw,62px);line-height:.95;margin:8px 0">Personal Brand <span style="color:var(--gold)">Playbook</span></h1>
+  <p class="hint" style="font-size:17px">Your athletic ability is the starting point. Let’s develop and tell your story.</p><div class="rule"></div>
+  <div class="tabs" role="tablist"><button role="tab" aria-selected="${mode==="new"}" data-m="new">First time here</button><button role="tab" aria-selected="${mode==="back"}" data-m="back">I've joined before</button></div>
+  <form id="jf" class="card" style="margin-top:0">${mode==="new"?`
+   <div class="field"><label for="jn">Your name</label><input id="jn" type="text" required autocomplete="name"></div>
+   <div class="field"><label for="jsc">School</label><input id="jsc" type="text" required></div>
+   <div class="field"><label for="jsp">Sport</label><input id="jsp" type="text" required></div>
+   <div class="field"><label for="jh">Instagram / TikTok handle<span class="sub">Optional</span></label><input id="jh" type="text" placeholder="@"></div>`:""}
+   <div class="field"><label for="je">Email</label><input id="je" type="email" required autocomplete="email"></div>
+   <div class="field"><label for="jp">${mode==="new"?"Choose a 4-digit PIN":"Your 4-digit PIN"}<span class="sub">${mode==="new"?"Use it to come back and see your answers from any device.":""}</span></label><input id="jp" inputmode="numeric" pattern="\\d{4}" maxlength="4" required autocomplete="off"></div>
+   <div class="err" id="jerr">${esc(err)}</div>
+   <button class="btn" type="submit" id="jb">${mode==="new"?"Join the session":"Open my playbook"}</button></form></section>`;
+  document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>renderJoin(b.dataset.m));
+  $("#jf").onsubmit=async e=>{e.preventDefault();const b=$("#jb");b.disabled=true;$("#jerr").textContent="";
+    try{const v=id=>($(id)?.value||"").trim();
+      const r=mode==="new"?await api("join",{name:v("#jn"),school:v("#jsc"),sport:v("#jsp"),handle:v("#jh"),email:v("#je"),pin:v("#jp")}):await api("login",v("#je"),v("#jp"));
+      S.answers={};adopt(r);render()}
+    catch(x){$("#jerr").textContent=x.message;b.disabled=false}};
+}
+function signOut(){if(!confirm("Sign out on this device? Your answers stay saved with 98Strong."))return;ls.set({});S={me:null,pin:null,answers:{},materials:{},open:["discover"],view:"discover",shared:{}};stopWall();renderJoin("back")}
+
+/* ================= MAIN ================= */
+function render(){
+  $("#who").innerHTML=`<span class="meta">${esc(S.me.name)} · ${esc(S.me.sport)}<br></span><a id="so">Sign out</a>`;$("#so").onclick=signOut;
+  const nav=$("#nav");nav.hidden=false;
+  nav.innerHTML=SESSIONS.map(s=>{const open=S.open.includes(s.id);return `<button data-v="${s.id}" aria-current="${S.view===s.id}" ${open?"":"disabled"}>Session ${s.n}${open?"":" · soon"}<span class="disp">${s.name}</span></button>`}).join("")
+   +`<button data-v="wall" aria-current="${S.view==="wall"}">Live<span class="disp">Group wall</span></button><button data-v="mine" aria-current="${S.view==="mine"}">Yours<span class="disp">My playbook</span></button>`;
+  nav.querySelectorAll("button").forEach(b=>b.onclick=()=>{S.view=b.dataset.v;cache();render();scrollTo(0,0)});
+  stopWall();
+  if(S.view==="wall")return renderWall();
+  if(S.view==="mine")return renderMine();
+  const s=SESSIONS.find(x=>x.id===S.view)||SESSIONS[0];
+  let h=`<section class="hero"><div class="eyebrow">Session ${s.n} · 30-45 minutes</div><h1>${s.name}</h1><p>${s.tag}</p><div class="rule"></div>
+  <div class="agenda">${s.agenda.map(a=>`<div><b>${a[0]}</b> ${a[1]}</div>`).join("")}</div>
+  <p class="hint" style="margin-top:14px"><span class="eyebrow">You leave with</span> ${s.leave}</p>
+  <p class="status">🔒 Everything you write is private to you and 98Strong unless you tap <b>Share to group wall</b>.</p></section>`;
+  s.steps.forEach((st,i)=>{
+    h+=`<section class="card ${st.cream?"cream":""}"><div class="num disp">${String(i+1).padStart(2,"0")}</div><h2>${st.title}</h2>
+    ${st.private?`<div class="private">🔒 Private · only you and 98Strong</div>`:""}
+    ${st.hint?`<p class="hint">${st.hint}</p>`:""}
+    ${st.fields.map(f=>fieldHTML(s.id,f)).join("")}
+    ${st.example?`<div class="example">${st.example}</div>`:""}
+    ${st.review?reviewHTML(s.id):""}</section>`});
+  h+=`<section class="card"><div class="eyebrow">Session ${s.n} complete</div><h2>Save + close</h2>
+   <ol>${s.close.map(c=>`<li>${c}</li>`).join("")}</ol>
+   <p class="hint">Your answers save automatically as you type. Come back to this link any time with your email and PIN.</p></section>`;
+  $("#app").innerHTML=h;bind(s.id);
+}
+
+function shareBtn(sid,f,key,kind,disabled){const done=S.shared[sid+":"+key];
+  return `<button type="button" class="btn sm ${done?"done":"ghost"}" data-share="${esc(key)}" data-kind="${esc(kind)}" ${disabled?"disabled":""}>${done?"Shared ✓":"Share to group wall"}</button>`}
+
+function fieldHTML(sid,f){
+  const v=ans(sid,f.id);
+  const lab=f.label&&f.type!=="pick2"&&f.type!=="board"&&f.type!=="fill"?`<label for="${f.id}">${esc(f.label)}${f.sub?`<span class="sub">${esc(f.sub)}</span>`:""}</label>`:"";
+  const share=f.share?`<div class="row" style="margin-top:8px">${shareBtn(sid,f,f.id,f.share)}</div>`:"";
+  switch(f.type){
+   case "textarea":return `<div class="field">${lab}<textarea id="${f.id}" data-k="${f.id}">${esc(v)}</textarea>${share}</div>`;
+   case "text":return `<div class="field">${lab}<input type="text" id="${f.id}" data-k="${f.id}" value="${esc(v)}" placeholder="${esc(f.ph||"")}">${share}</div>`;
+   case "date":return `<div class="field">${lab}<input type="date" id="${f.id}" data-k="${f.id}" value="${esc(v)}"></div>`;
+   case "chips":return `<div class="field"><label>${esc(f.label)}</label><div class="chips" role="radiogroup">${f.options.map(o=>`<label><input type="radio" name="${f.id}" data-k="${f.id}" value="${esc(o)}" ${v===o?"checked":""}>${esc(o)}</label>`).join("")}</div></div>`;
+   case "pick2":{const sel=v||{};return `<div class="field"><div class="chips">${f.options.map((o,i)=>`<label><input type="checkbox" data-pick="${f.id}" value="${i}" ${sel[i]!==undefined?"checked":""}>${esc(o)}</label>`).join("")}</div>
+     ${f.options.map((o,i)=>sel[i]!==undefined?`<div class="field"><label>${esc(o)}</label><textarea data-pickv="${f.id}" data-i="${i}">${esc(sel[i])}</textarea></div>`:"").join("")}</div>`}
+   case "board":{const items=v||[];const n=Math.min(f.max,Math.max(f.min,items.length));const filled=items.filter(x=>x&&(x.what||x.photo)).length;
+     let t=`<div class="row" style="margin-bottom:12px"><span class="count" id="bcount">${filled} / ${f.min}-${f.max}</span><span class="status">Add a photo, pick a category and give it a few words.</span></div><div class="board">`;
+     for(let i=0;i<n;i++){const it=items[i]||{};t+=`<div class="tile"><label class="ph" data-ph="${i}" aria-label="Add photo ${i+1}">${it.photo?`<img src="${esc(photoSrc(it.photo))}" alt="">`:`<span><span class="plus">+</span>Add photo</span>`}<span class="n">${i+1}</span><input type="file" accept="image/*" data-up="${i}"></label>
+       <div class="body"><select data-board="${i}" data-f="cat" aria-label="Category"><option value="">Category…</option>${f.cats.map(c=>`<option ${it.cat===c?"selected":""}>${c}</option>`).join("")}</select>
+       <input type="text" data-board="${i}" data-f="what" placeholder="What is it? A few words" value="${esc(it.what)}">
+       ${shareBtn(sid,f,"board-"+i,"Mood board pick",!(it.what||it.photo))}</div></div>`}
+     t+=`</div>${n<f.max?`<button type="button" class="btn ghost" style="margin-top:12px" id="addTile">+ Add a pick</button>`:""}`;return `<div class="field">${t}</div>`}
+   case "list":{const arr=v||[];return `<div class="field">${lab}<div class="fill">${Array.from({length:f.n},(_,i)=>`<div class="line"><span class="count" style="font-size:18px;width:20px">${i+1}</span><input type="text" data-list="${f.id}" data-i="${i}" value="${esc(arr[i])}" aria-label="Story idea ${i+1}"></div>`).join("")}</div></div>`}
+   case "fill":{const o=v||{};return `<div class="field fill">${f.lines.map(l=>{let s='<div class="line">';for(let i=0;i<l.length;i+=2){s+=`<span>${esc(l[i])}</span><input type="text" data-fill="${f.id}" data-sub="${l[i+1]}" value="${esc(o[l[i+1]])}" aria-label="${esc(l[i])}">`}return s+"</div>"}).join("")}</div>`}
+  }return ""}
+
+function reviewHTML(sid){
+  const A=id=>ans("define",id),B=(ans("discover","board")||[]).filter(x=>x&&x.what);
+  const r=(t,b)=>`<div class="card" style="margin:0;border-top-width:2px"><div class="eyebrow">${t}</div><div style="white-space:pre-wrap;font-size:14px">${b?esc(b):'<span class="hint">Not filled in yet</span>'}</div></div>`;
+  return `<div class="grid3">${r("Who you are",[A("intro"),B.length&&("Board: "+B.map(x=>x.what).join(", "))].filter(Boolean).join("\n\n"))}${r("What matters",[A("value1"),A("value2")].filter(Boolean).join("\n"))}${r("What you want",[A("goal2"),A("progress")&&"Progress: "+A("progress")].filter(Boolean).join("\n"))}${r("What you could share",[A("s_details"),A("s_learning"),A("s_routine"),A("share")&&"OK to share: "+A("share")].filter(Boolean).join("\n"))}</div>`}
+
+function bind(sid){
+  const app=$("#app");
+  app.querySelectorAll("[data-k]").forEach(el=>el.addEventListener(el.type==="radio"?"change":"input",()=>setAns(sid,el.dataset.k,el.value)));
+  app.querySelectorAll("[data-pick]").forEach(el=>el.onchange=()=>{const k=el.dataset.pick,sel={...(ans(sid,k)||{})};
+    if(el.checked){if(Object.keys(sel).length>=2){el.checked=false;toast("Choose two. Untick one first.");return}sel[el.value]=""}else delete sel[el.value];setAns(sid,k,sel);render()});
+  app.querySelectorAll("[data-pickv]").forEach(el=>el.oninput=()=>{const o={...(ans(sid,el.dataset.pickv)||{})};o[el.dataset.i]=el.value;setAns(sid,el.dataset.pickv,o)});
+  const board=()=>{const b=(ans(sid,"board")||[]).slice();return b};
+  app.querySelectorAll("[data-board]").forEach(el=>el.addEventListener(el.tagName==="SELECT"?"change":"input",()=>{const b=board(),i=+el.dataset.board;b[i]={...(b[i]||{}),[el.dataset.f]:el.value};setAns(sid,"board",b);updateBoardUI(b,i)}));
+  app.querySelectorAll("[data-up]").forEach(el=>el.onchange=()=>el.files[0]&&uploadTile(sid,+el.dataset.up,el.files[0]));
+  const add=$("#addTile");if(add)add.onclick=()=>{const b=board();while(b.length<8)b.push({});b.push({});setAns(sid,"board",b);render()};
+  app.querySelectorAll("[data-list]").forEach(el=>el.oninput=()=>{const a=(ans(sid,el.dataset.list)||[]).slice();a[el.dataset.i]=el.value;setAns(sid,el.dataset.list,a)});
+  app.querySelectorAll("[data-fill]").forEach(el=>el.oninput=()=>{const o={...(ans(sid,el.dataset.fill)||{})};o[el.dataset.sub]=el.value;setAns(sid,el.dataset.fill,o)});
+  app.querySelectorAll("[data-share]").forEach(el=>el.onclick=()=>share(sid,el));
+}
+function updateBoardUI(b,i){const c=$("#bcount");if(c)c.textContent=b.filter(x=>x&&(x.what||x.photo)).length+" / 8-12";
+  const btn=document.querySelector(`[data-share="board-${i}"]`);if(btn)btn.disabled=!(b[i]&&(b[i].what||b[i].photo))}
+
+async function share(sid,el){
+  const key=el.dataset.share,kind=el.dataset.kind;let text="",photo="";
+  if(key.startsWith("board-")){const it=(ans(sid,"board")||[])[+key.slice(6)]||{};text=[it.cat,it.what].filter(Boolean).join(": ");photo=it.photo||""}
+  else text=ans(sid,key)||"";
+  if(!text.trim()&&!photo){toast("Write something first.");return}
+  el.disabled=true;el.textContent="Sharing…";
+  try{await api("postToWall",S.me.id,S.pin,kind,text,photo);S.shared[sid+":"+key]=1;cache();el.className="btn sm done";el.textContent="Shared ✓";toast("Posted to the group wall")}
+  catch(e){toast("Couldn't share: "+e.message);el.textContent="Share to group wall"}
+  el.disabled=false}
+
+/* phone photo → resized JPEG → Drive */
+async function uploadTile(sid,i,file){
+  const ph=document.querySelector(`[data-ph="${i}"]`);ph.querySelector("span")&&(ph.querySelector("span").innerHTML="Uploading…");
+  try{const url=await shrink(file,1280,.82);
+    const prev=ph.querySelector("img")||document.createElement("img");prev.src=url;prev.alt="";if(!prev.parentNode)ph.prepend(prev);ph.querySelector("span:not(.n)")?.remove();
+    const r=await api("uploadPhoto",S.me.id,S.pin,url,"Mood board "+(i+1));
+    const b=(ans(sid,"board")||[]).slice();while(b.length<=i)b.push({});b[i]={...(b[i]||{}),photo:r.id};setAns(sid,"board",b);updateBoardUI(b,i);toast("Photo added")}
+  catch(e){toast("Upload failed: "+e.message);render()}}
+function shrink(file,max,q){return new Promise((res,rej)=>{const img=new Image();const u=URL.createObjectURL(file);
+  img.onload=()=>{const k=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement("canvas");c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
+    c.getContext("2d").drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",q))};
+  img.onerror=()=>rej(new Error("That file type isn't supported. Try a JPG or PNG screenshot."));img.src=u})}
+
+/* ================= GROUP WALL ================= */
+let wallTimer=null;function stopWall(){clearInterval(wallTimer);wallTimer=null}
+function postHTML(p,opts={}){return `<article class="post ${p.hidden?"hidden":""}">${p.photoId?`<img src="${esc(photoSrc(p.photoId))}" alt="" loading="lazy">`:""}
+  <div class="pb"><div class="k">${esc(p.kind)}</div>${p.text?`<div class="t">${esc(p.text)}</div>`:""}
+  <div class="by"><span>${esc(p.name)}</span>${opts.mine&&p.athleteId===S.me?.id?`<button class="linkbtn" data-rm="${esc(p.id)}">Remove</button>`:""}${opts.host?`<button class="linkbtn" data-hide="${esc(p.id)}" data-h="${p.hidden?0:1}">${p.hidden?"Show":"Hide"}</button>`:""}</div></div></article>`}
+function renderWall(){
+  $("#app").innerHTML=`<section class="hero"><div class="eyebrow">Live</div><h1>Group wall</h1><p>Introductions, story ideas and mood board picks the group chose to share.</p><div class="rule"></div></section><div id="wall"><p class="status">Loading…</p></div>`;
+  const load=async()=>{try{const posts=await api("getWall");const el=$("#wall");if(!el)return;
+    el.innerHTML=posts.length?`<div class="wall">${posts.map(p=>postHTML(p,{mine:true})).join("")}</div>`:`<div class="empty">Nothing shared yet. Tap <b>Share to group wall</b> on a mood board pick or an answer.</div>`;
+    el.querySelectorAll("[data-rm]").forEach(b=>b.onclick=async()=>{await api("removeMyPost",S.me.id,S.pin,b.dataset.rm);load()})}catch(e){}};
+  load();wallTimer=setInterval(load,6000)}
+
+/* ================= MY PLAYBOOK ================= */
+function renderMine(){
+  const m=S.materials||{};
+  $("#app").innerHTML=`<section class="hero"><div class="eyebrow">Yours</div><h1>My playbook</h1><p>Your documents from 98Strong show up here when they're ready.</p><div class="rule"></div></section>
+  <div class="grid3">${MATERIALS.map(([k,t])=>`<section class="card"><h2 style="font-size:26px">${t}</h2><p class="hint">${m[k]?"Ready":"Not ready yet"}</p>${m[k]?`<a class="btn" href="${esc(m[k])}" target="_blank" rel="noopener">Open</a>`:""}</section>`).join("")}</div>
+  <section class="card"><h2 style="font-size:26px">My answers</h2><p class="hint">Everything you've written, by session. Tap a session above to edit.</p>
+  ${SESSIONS.map(s=>{const f=flatten(s.id);const rows=Object.entries(f).filter(([,v])=>v);return `<h3 class="eyebrow" style="font-size:20px;margin-top:18px">Session ${s.n} · ${s.name}</h3>${rows.length?rows.map(([k,v])=>`<div style="margin:8px 0"><div class="status">${esc(k.replace(/^\d+\. /,""))}</div><div style="white-space:pre-wrap">${esc(v)}</div></div>`).join(""):`<p class="status">Nothing yet.</p>`}`}).join("")}</section>`}
+
+/* ================= HOST VIEW ================= */
+let H=null,present=false;
+async function renderHost(){
+  $("#nav").hidden=true;$("#who").innerHTML=`<span class="meta">Host view</span>`;
+  try{H=await api("hostOverview",hostKey)}catch(e){$("#app").innerHTML=`<div class="empty">${esc(e.message)}</div>`;return}
+  if(present)return renderPresent();
+  const sessionCount=id=>SESSIONS.find(s=>s.id===id).steps.reduce((n,st)=>n+st.fields.length,0);
+  $("#app").innerHTML=`<section class="hero"><div class="eyebrow">Host view · keep this link private</div><h1>Session control</h1><div class="rule"></div>
+   <div class="row">${H.sheetUrl?`<a class="btn ghost" href="${esc(H.sheetUrl)}" target="_blank">Open response Sheet</a>`:""}<button class="btn" id="pres">Present group wall</button><button class="btn ghost" id="ref">Refresh</button></div></section>
+  <section class="card"><h2>Open sessions</h2><p class="hint">Athletes can only open the sessions you turn on.</p><div class="chips">${SESSIONS.map(s=>`<label><input type="checkbox" data-open="${s.id}" ${H.open.includes(s.id)?"checked":""}>Session ${s.n} · ${s.name}</label>`).join("")}</div></section>
+  <section class="card"><h2>Athletes (${H.athletes.length})</h2><p class="hint">Progress = fields answered. Upload each athlete's documents when they're ready and they'll appear in that athlete's My Playbook tab.</p>
+   ${H.athletes.length?`<div style="overflow-x:auto"><table><thead><tr><th>Athlete</th>${SESSIONS.map(s=>`<th class="hide-sm">${s.name}</th>`).join("")}<th>Documents</th></tr></thead><tbody>
+   ${H.athletes.map(a=>`<tr><td><b>${esc(a.name)}</b><div class="status">${esc(a.sport)} · ${esc(a.school)}${a.handle?"<br>"+esc(a.handle):""}<br>${a.lastActive?"Active "+new Date(a.lastActive).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"}):""}</div></td>
+     ${SESSIONS.map(s=>`<td class="hide-sm">${(a.progress||{})[s.id]||0} / ${sessionCount(s.id)}</td>`).join("")}
+     <td><div class="mat">${MATERIALS.map(([k,t])=>`<div class="m">${a.materials[k]?`<a href="${esc(a.materials[k])}" target="_blank">${t} ✓</a>`:`<span class="status">${t}</span>`}
+       <label class="btn sm ghost" style="margin:0">Upload<input type="file" hidden data-mat="${k}" data-a="${esc(a.id)}"></label><button class="linkbtn" data-link="${k}" data-a="${esc(a.id)}">or paste link</button></div>`).join("")}</div></td></tr>`).join("")}
+   </tbody></table></div>`:`<div class="empty">No one has joined yet. Share the site link (without ?host=…).</div>`}</section>
+  <section class="card"><h2>Group wall</h2><p class="hint">Hide anything that shouldn't be on screen. Hidden posts stay in the Sheet.</p>${H.wall.length?`<div class="wall">${H.wall.map(p=>postHTML(p,{host:true})).join("")}</div>`:`<div class="empty">Nothing shared yet.</div>`}</section>`;
+  $("#ref").onclick=renderHost;$("#pres").onclick=()=>{present=true;renderHost()};
+  document.querySelectorAll("[data-open]").forEach(c=>c.onchange=async()=>{const l=[...document.querySelectorAll("[data-open]:checked")].map(x=>x.dataset.open);await api("hostSetOpen",hostKey,l);toast("Updated. Athletes see it when they refresh.")});
+  document.querySelectorAll("[data-hide]").forEach(b=>b.onclick=async()=>{await api("hostSetHidden",hostKey,b.dataset.hide,b.dataset.h==="1");renderHost()});
+  document.querySelectorAll("[data-mat]").forEach(inp=>inp.onchange=async()=>{const f=inp.files[0];if(!f)return;if(f.size>15e6){toast("15 MB max");return}
+    toast("Uploading…");const url=await new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.readAsDataURL(f)});
+    try{await api("hostSetMaterial",hostKey,inp.dataset.a,inp.dataset.mat,url,f.name,"");toast("Uploaded");renderHost()}catch(e){toast(e.message)}});
+  document.querySelectorAll("[data-link]").forEach(b=>b.onclick=async()=>{const l=prompt("Paste a Google Drive or other link");if(!l)return;await api("hostSetMaterial",hostKey,b.dataset.a,b.dataset.link,"","",l);renderHost()});
+}
+let presTimer=null;
+async function renderPresent(){
+  document.body.classList.add("present");
+  const draw=async()=>{try{H=await api("hostOverview",hostKey)}catch(e){return}const posts=H.wall.filter(p=>!p.hidden);
+    $("#app").innerHTML=`<section class="hero" style="padding-top:6px"><div class="row" style="justify-content:space-between"><h1 style="font-size:54px">Group wall</h1><button class="btn ghost sm" id="exit">Exit</button></div><div class="rule"></div></section>
+    ${posts.length?`<div class="wall">${posts.map(p=>postHTML(p)).join("")}</div>`:`<div class="empty">Waiting for the first share…</div>`}`;
+    $("#exit").onclick=()=>{present=false;clearInterval(presTimer);document.body.classList.remove("present");renderHost()}};
+  await draw();clearInterval(presTimer);presTimer=setInterval(draw,5000)}
+</script>
+</body>
+</html>
