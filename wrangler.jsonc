@@ -1,0 +1,6 @@
+{
+  // Cloudflare Workers static site: serve only the public/ folder.
+  "name": "98strong-brand-playbook",
+  "compatibility_date": "2026-10-01",
+  "assets": { "directory": "./public" }
+}
