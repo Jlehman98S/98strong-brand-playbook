@@ -80,6 +80,7 @@ textarea:focus,input:focus,select:focus{outline:2px solid var(--gold);outline-of
 .photos img:nth-child(even){transform:translateY(14px)}
 .overview{background:var(--panel);border-left:3px solid var(--gold);padding:14px 18px;border-radius:0 4px 4px 0;font-size:16px;margin:26px 0 8px}
 .overview b{color:var(--gold)}
+.overview h2{font-size:28px;line-height:1;margin:0 0 8px;color:var(--text)}
 .at{display:flex;align-items:center;border:1px solid #333;border-radius:4px;background:#0f0f0f}
 .at span{padding:0 4px 0 12px;color:var(--muted)}
 .at input{border:0!important;padding-left:2px!important}
@@ -303,7 +304,7 @@ function renderJoin(mode="new",err=""){
   $("#app").innerHTML=`<section class="join">${PHOTOS}<div class="eyebrow" style="margin-top:22px">98Strong Student Athlete Development</div>
   <h1 style="font-size:clamp(46px,11vw,62px);line-height:.95;margin:8px 0">Personal Brand <span style="color:var(--gold)">Playbook</span></h1>
   <p class="hint" style="font-size:17px">Your athletic ability is the starting point. Let’s develop and tell your story.</p><div class="rule"></div>
-  <p class="overview">${OVERVIEW}</p>
+  <div class="overview"><h2>What We’ll Build</h2><p style="margin:0">${OVERVIEW}</p></div>
   <div class="tabs" role="tablist"><button role="tab" aria-selected="${mode==="new"}" data-m="new">First time here</button><button role="tab" aria-selected="${mode==="back"}" data-m="back">I've joined before</button></div>
   <form id="jf" class="card" style="margin-top:0">${mode==="new"?`
    <div class="field"><label for="jn">Your name</label><input id="jn" type="text" required autocomplete="name"></div>
@@ -336,7 +337,7 @@ function render(){
   if(S.view==="wall")return renderWall();
   if(S.view==="mine")return renderMine();
   const s=SESSIONS.find(x=>x.id===S.view)||SESSIONS[0];
-  let h=`${PHOTOS}<p class="overview" style="margin-top:22px">${OVERVIEW}</p><section class="hero"><div class="eyebrow">Session ${s.n} · 30-45 minutes</div><h1>${s.name}</h1><p>${s.tag}</p><div class="rule"></div>
+  let h=`${PHOTOS}<div class="overview" style="margin-top:22px"><h2>What We’ll Build</h2><p style="margin:0">${OVERVIEW}</p></div><section class="hero"><h1>Session ${s.n} ${s.name}</h1><div class="eyebrow" style="font-size:18px">30-45 minutes</div><p>${s.tag}</p><div class="rule"></div>
   <div class="agenda">${s.agenda.map(a=>`<div><b>${a[0]}</b> ${a[1]}</div>`).join("")}</div>
   <p class="hint" style="margin-top:14px"><span class="eyebrow">You leave with</span> ${s.leave}</p>
   <p class="status">🔒 Everything you write is private to you and 98Strong unless you tap <b>Share to group wall</b>.</p></section>`;
