@@ -50,7 +50,7 @@ function setup() {
 
 // Called by the Cloudflare-hosted site: POST {fn, args} as text/plain, returns {ok, data | error}.
 const PUBLIC_FNS = ['getConfig', 'join', 'login', 'saveAnswers', 'uploadPhoto', 'postToWall', 'removeMyPost', 'getWall',
-                    'hostOverview', 'hostSetOpen', 'hostSetHidden', 'hostSetMaterial'];
+                    'getPhotos', 'hostOverview', 'hostSetOpen', 'hostSetHidden', 'hostSetMaterial', 'hostAthlete', 'hostPhotos'];
 function doPost(e) {
   let out;
   try {
@@ -160,6 +160,36 @@ function removeMyPost(id, pin, postId) {
 
 function getWall() { return wall_(false); }
 
+/** Mood board photos as data URLs, so the athlete's PDF can include them. */
+function getPhotos(id, pin, ids) { auth_(id, pin); return photos_(ids); }
+
+/* ---------------- photos for PDFs ---------------- */
+
+function photos_(ids) {
+  const rootId = PropertiesService.getScriptProperties().getProperty('FOLDER_ID');
+  const out = {};
+  (ids || []).slice(0, 16).forEach(fid => {
+    try {
+      const f = DriveApp.getFileById(String(fid));
+      if (!inFolder_(f, rootId)) return;
+      const b = f.getBlob();
+      if (!/^image\//.test(b.getContentType()) || b.getBytes().length > 6 * 1024 * 1024) return;
+      out[fid] = 'data:' + b.getContentType() + ';base64,' + Utilities.base64Encode(b.getBytes());
+    } catch (e) {}
+  });
+  return out;
+}
+function inFolder_(file, rootId) {
+  const ps = file.getParents();
+  while (ps.hasNext()) {
+    const p = ps.next();
+    if (p.getId() === rootId) return true;
+    const gp = p.getParents();
+    while (gp.hasNext()) if (gp.next().getId() === rootId) return true;
+  }
+  return false;
+}
+
 /* ---------------- host API ---------------- */
 
 function hostOverview(key) {
@@ -178,6 +208,17 @@ function hostOverview(key) {
   });
   return { open: openSessions_(), athletes, wall: wall_(true), sheetUrl: SpreadsheetApp.getActiveSpreadsheet().getUrl() };
 }
+
+function hostAthlete(key, athleteId) {
+  hostAuth_(key);
+  const rows = sheet_(TAB.athletes).getDataRange().getValues(), c = colIndex_(rows[0]);
+  const r = rows.find((x, i) => i > 0 && x[c['ID']] === athleteId);
+  if (!r) throw new Error('Athlete not found');
+  const s = session_(r, c, '');
+  delete s.pin;
+  return s;
+}
+function hostPhotos(key, ids) { hostAuth_(key); return photos_(ids); }
 
 function hostSetOpen(key, list) {
   hostAuth_(key);

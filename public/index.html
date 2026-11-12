@@ -112,6 +112,39 @@ th{color:var(--gold);font:italic 800 15px "Barlow Condensed";text-transform:uppe
 .mat a,.matlink{color:var(--gold)}
 .empty{color:var(--muted);text-align:center;padding:40px 10px;border:1px dashed var(--line);border-radius:4px}
 .lock{font-size:13px;color:var(--muted)}
+.pbhead{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between}
+.pdfbtn{display:inline-flex;align-items:center;gap:10px;font-size:20px;padding:14px 22px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 16px}
+.filters button{background:none;border:1px solid #3a3a3a;color:var(--text);border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;cursor:pointer}
+.filters button[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:#111;font-weight:600}
+.mb{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:150px;gap:10px;grid-auto-flow:dense}
+.mb .it{position:relative;border-radius:4px;overflow:hidden;cursor:pointer;background:var(--gold);border:0;padding:0;text-align:left;color:inherit;font:inherit;transition:transform .2s}
+.mb .it:hover,.mb .it:focus-visible{transform:scale(1.02);outline:2px solid var(--gold);outline-offset:2px;z-index:1}
+.mb .it.big{grid-column:span 2;grid-row:span 2}.mb .it.tall{grid-row:span 2}
+.mb .it img{width:100%;height:100%;object-fit:cover;display:block}
+.mb .it .cap{position:absolute;inset:auto 0 0 0;padding:22px 10px 8px;background:linear-gradient(transparent,rgba(0,0,0,.85));color:#fff}
+.mb .it .cap b{display:block;font:italic 800 14px "Barlow Condensed";color:var(--gold);text-transform:uppercase;letter-spacing:.05em}
+.mb .it .cap span{font-size:13px;line-height:1.3;display:block}
+.mb .it.txt{display:flex;align-items:flex-end;padding:12px;color:#111}
+.mb .it.txt .q{font:italic 800 22px/1 "Barlow Condensed";text-transform:uppercase}
+.mb .it.txt .cap{background:none;position:static;padding:0;color:#111}.mb .it.txt .cap b{color:#111}
+.mb .it.hidden-f{display:none}
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:18px}
+.why blockquote{margin:0;border-left:3px solid var(--gold);padding:6px 14px;font-style:italic;color:var(--text)}
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.sum .card{margin:0}
+.sum .body{white-space:pre-wrap;font-size:14px}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:20;display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top)) 16px}
+.lb figure{margin:0;max-width:min(92vw,760px);width:100%;text-align:center}
+.lb img{max-width:100%;max-height:70vh;border-radius:4px;display:block;margin:0 auto}
+.lb .noimg{background:var(--gold);color:#111;border-radius:4px;padding:60px 20px;font:italic 800 40px/1 "Barlow Condensed";text-transform:uppercase}
+.lb figcaption{margin-top:12px}.lb figcaption b{font:italic 800 18px "Barlow Condensed";color:var(--gold);text-transform:uppercase;display:block}
+.lb .nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(20,20,20,.8);border:1px solid #444;color:#fff;width:46px;height:46px;border-radius:50%;font-size:22px;cursor:pointer}
+.lb .prev{left:12px}.lb .next{right:12px}.lb .x{position:absolute;top:14px;right:14px;background:none;border:0;color:#fff;font-size:30px;cursor:pointer}
+.lb .ct{color:var(--muted);font-size:12px;margin-top:6px}
+details.answers summary{cursor:pointer;font:italic 800 22px "Barlow Condensed";text-transform:uppercase;color:var(--text)}
+@media (max-width:640px){.mb{grid-template-columns:repeat(2,1fr);grid-auto-rows:140px}.mb .it.big{grid-column:span 2}}
+@media (prefers-reduced-motion:reduce){.mb .it{transition:none}}
 footer{color:var(--muted);font-size:12px;text-align:center;padding:30px 16px}
 @media (max-width:560px){.card{padding:16px}.who .meta{display:none}.logo{height:32px}table{font-size:13px}.hide-sm{display:none}}
 </style>
@@ -240,6 +273,9 @@ const MOCK=(()=>{const K="pbp-demo-db";
    removeMyPost:(id,pin,pid)=>{auth(id,pin);const p=d.wall.find(x=>x.id===pid&&x.athleteId===id);if(p)p.hidden=true;w();return true},
    getWall:()=>d.wall.filter(p=>!p.hidden),
    hostOverview:()=>({open:d.open,sheetUrl:"",wall:d.wall,athletes:d.athletes.map(a=>({...a,lastActive:a.last||"",progress:Object.fromEntries(Object.entries(d.data[a.id]||{}).map(([k,v])=>[k,Object.values(v).filter(x=>x&&(typeof x!=="object"||Object.keys(x).length)).length])),materials:a.materials||{}}))}),
+   getPhotos:(id,pin,ids)=>Object.fromEntries((ids||[]).map(x=>[x,x])),
+   hostPhotos:(k,ids)=>Object.fromEntries((ids||[]).map(x=>[x,x])),
+   hostAthlete:(k,aid)=>{const a=d.athletes.find(x=>x.id===aid);return{athlete:a,answers:d.data[aid]||{},materials:a.materials||{}}},
    hostSetOpen:(k,l)=>{d.open=l;w();return l},
    hostSetHidden:(k,pid,h)=>{const p=d.wall.find(x=>x.id===pid);if(p)p.hidden=h;w();return true},
    hostSetMaterial:(k,aid,type,url,fn,link)=>{const a=d.athletes.find(x=>x.id===aid);a.materials=a.materials||{};a.materials[type]=url||link;w();return a.materials[type]}
@@ -379,7 +415,7 @@ function fieldHTML(sid,f){
        <div class="body"><select data-board="${i}" data-f="cat" aria-label="Category"><option value="">Category…</option>${f.cats.map(c=>`<option ${it.cat===c?"selected":""}>${c}</option>`).join("")}</select>
        <input type="text" data-board="${i}" data-f="what" placeholder="What is it? A few words" value="${esc(it.what)}">
        ${shareBtn(sid,f,"board-"+i,"Mood board pick",!(it.what||it.photo))}</div></div>`}
-     t+=`</div>${n<f.max?`<button type="button" class="btn ghost" style="margin-top:12px" id="addTile">+ Add a pick</button>`:""}`;return `<div class="field">${t}</div>`}
+     t+=`</div>${n<f.max?`<button type="button" class="btn ghost" style="margin-top:12px" id="addTile">+ Add a picture</button>`:""}`;return `<div class="field">${t}</div>`}
    case "list":{const arr=v||[];return `<div class="field">${lab}<div class="fill">${Array.from({length:f.n},(_,i)=>`<div class="line"><span class="count" style="font-size:18px;width:20px">${i+1}</span><input type="text" data-list="${f.id}" data-i="${i}" value="${esc(arr[i])}" aria-label="Story idea ${i+1}"></div>`).join("")}</div></div>`}
    case "fill":{const o=v||{};return `<div class="field fill">${f.lines.map(l=>{let s='<div class="line">';for(let i=0;i<l.length;i+=2){s+=`<span>${esc(l[i])}</span><input type="text" data-fill="${f.id}" data-sub="${l[i+1]}" value="${esc(o[l[i+1]])}" aria-label="${esc(l[i])}">`}return s+"</div>"}).join("")}</div>`}
   }return ""}
@@ -443,11 +479,54 @@ function renderWall(){
 
 /* ================= MY PLAYBOOK ================= */
 function renderMine(){
-  const m=S.materials||{};
-  $("#app").innerHTML=`<section class="hero"><div class="eyebrow">Yours</div><h1>My playbook</h1><p>Your documents from 98Strong show up here when they're ready.</p><div class="rule"></div></section>
-  <div class="grid3">${MATERIALS.map(([k,t])=>`<section class="card"><h2 style="font-size:26px">${t}</h2><p class="hint">${m[k]?"Ready":"Not ready yet"}</p>${m[k]?`<a class="btn" href="${esc(m[k])}" target="_blank" rel="noopener">Open</a>`:""}</section>`).join("")}</div>
-  <section class="card"><h2 style="font-size:26px">My answers</h2><p class="hint">Everything you've written, by session. Tap a session above to edit.</p>
-  ${SESSIONS.map(s=>{const f=flatten(s.id);const rows=Object.entries(f).filter(([,v])=>v);return `<h3 class="eyebrow" style="font-size:20px;margin-top:18px">Session ${s.n} · ${s.name}</h3>${rows.length?rows.map(([k,v])=>`<div style="margin:8px 0"><div class="status">${esc(k.replace(/^\d+\. /,""))}</div><div style="white-space:pre-wrap">${esc(v)}</div></div>`).join(""):`<p class="status">Nothing yet.</p>`}`}).join("")}</section>`}
+  const m=S.materials||{},a=(sid,k)=>ans(sid,k);
+  const board=(a("discover","board")||[]).map((b,i)=>({...b,i})).filter(b=>b&&(b.what||b.photo));
+  const cats=[...new Set(board.map(b=>b.cat).filter(Boolean))];
+  const why=["why1","why2","why3"].map(k=>a("discover",k)).filter(Boolean);
+  const shape=i=>i===0?"big":(i%5===3?"tall":"");
+  const sumCard=(t,b)=>`<section class="card"><div class="eyebrow">${t}</div><div class="body">${b?esc(b):'<span class="hint">Not filled in yet</span>'}</div></section>`;
+  const plan=[a("act","c_will")&&"This week: "+a("act","c_will"),a("act","c_when")&&"When: "+a("act","c_when"),a("act","gap")&&"Gap: "+a("act","gap")].filter(Boolean).join("\n");
+  $("#app").innerHTML=`<section class="hero"><div class="pbhead"><div><div class="eyebrow">Yours</div><h1>My playbook</h1><p>Everything you've built so far, in one place.</p></div>
+    <button class="btn pdfbtn" id="pdf">⬇ Download my Playbook PDF</button></div><div class="rule"></div></section>
+  <section class="card"><div class="row" style="justify-content:space-between"><h2>My mood board</h2><span class="count">${board.length} picture${board.length===1?"":"s"}</span></div>
+   ${board.length?`<div class="filters" role="group" aria-label="Filter by category"><button aria-pressed="true" data-cat="">All</button>${cats.map(c=>`<button aria-pressed="false" data-cat="${esc(c)}">${esc(c)}</button>`).join("")}</div>
+   <div class="mb">${board.map((b,k)=>`<button class="it ${b.photo?shape(k):"txt"}" data-i="${k}" data-c="${esc(b.cat||"")}" aria-label="Open ${esc(b.what||b.cat||"picture")}">${b.photo?`<img src="${esc(photoSrc(b.photo))}" alt="" loading="lazy">`:`<span class="q">${esc(b.what)}</span>`}<span class="cap"><b>${esc(b.cat||"Pick")}</b>${b.photo?`<span>${esc(b.what)}</span>`:""}</span></button>`).join("")}</div>
+   ${why.length?`<div class="why">${why.map(w=>`<blockquote>“${esc(w)}”</blockquote>`).join("")}</div>`:""}`
+   :`<div class="empty">Your mood board is empty. Add pictures in <b>Session 01 · Discover</b>.</div>`}</section>
+  <div class="sum">${sumCard("Who I am",a("define","intro")||a("discover","interests"))}${sumCard("What matters",[a("define","value1"),a("define","value2")].filter(Boolean).join("\n"))}${sumCard("What I want",[a("define","goal2")||a("discover","goal1"),a("define","progress")&&"Progress: "+a("define","progress")].filter(Boolean).join("\n"))}${sumCard("My plan",plan)}</div>
+  <h2 style="font-size:28px;margin:30px 0 4px">From 98Strong</h2>
+  <div class="grid3">${MATERIALS.map(([k,t])=>`<section class="card"><h2 style="font-size:24px">${t}</h2><p class="hint">${m[k]?"Ready":"Not ready yet"}</p>${m[k]?`<a class="btn" href="${esc(m[k])}" target="_blank" rel="noopener">Open</a>`:""}</section>`).join("")}</div>
+  <section class="card"><details class="answers"><summary>All my answers</summary><p class="hint">Everything you've written, by session. Tap a session above to edit.</p>
+  ${SESSIONS.map(s=>{const f=flatten(s.id);const rows=Object.entries(f).filter(([,v])=>v);return `<h3 class="eyebrow" style="font-size:20px;margin-top:18px">Session ${s.n} · ${s.name}</h3>${rows.length?rows.map(([k,v])=>`<div style="margin:8px 0"><div class="status">${esc(k.replace(/^\d+\. /,""))}</div><div style="white-space:pre-wrap">${esc(v)}</div></div>`).join(""):`<p class="status">Nothing yet.</p>`}`}).join("")}</details></section>`;
+  $("#pdf").onclick=e=>downloadPDF(e.currentTarget,{me:S.me,answers:S.answers},ids=>api("getPhotos",S.me.id,S.pin,ids));
+  document.querySelectorAll(".filters button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".filters button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+    document.querySelectorAll(".mb .it").forEach(t=>t.classList.toggle("hidden-f",!!b.dataset.cat&&t.dataset.c!==b.dataset.cat))});
+  document.querySelectorAll(".mb .it").forEach(t=>t.onclick=()=>{const vis=[...document.querySelectorAll(".mb .it:not(.hidden-f)")].map(x=>+x.dataset.i);lightbox(board,vis,vis.indexOf(+t.dataset.i))});
+}
+function lightbox(board,order,pos){
+  const el=document.createElement("div");el.className="lb";el.setAttribute("role","dialog");el.setAttribute("aria-modal","true");document.body.appendChild(el);
+  const draw=()=>{const b=board[order[pos]];el.innerHTML=`<button class="x" aria-label="Close">×</button>${order.length>1?`<button class="nav prev" aria-label="Previous">‹</button><button class="nav next" aria-label="Next">›</button>`:""}
+   <figure>${b.photo?`<img src="${esc(photoSrc(b.photo))}" alt="${esc(b.what||"")}">`:`<div class="noimg">${esc(b.what)}</div>`}<figcaption><b>${esc(b.cat||"Pick")}</b>${esc(b.what||"")}<div class="ct">${pos+1} of ${order.length}</div></figcaption></figure>`;
+   el.querySelector(".x").onclick=close;const p=el.querySelector(".prev"),n=el.querySelector(".next");if(p){p.onclick=()=>go(-1);n.onclick=()=>go(1)}el.querySelector(".x").focus()};
+  const go=d=>{pos=(pos+d+order.length)%order.length;draw()};
+  const key=e=>{if(e.key==="Escape")close();if(e.key==="ArrowLeft")go(-1);if(e.key==="ArrowRight")go(1)};
+  let sx=null;el.addEventListener("touchstart",e=>sx=e.touches[0].clientX,{passive:true});el.addEventListener("touchend",e=>{if(sx==null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(dx<0?1:-1);sx=null});
+  el.addEventListener("click",e=>{if(e.target===el)close()});
+  function close(){document.removeEventListener("keydown",key);el.remove()}
+  document.addEventListener("keydown",key);draw();
+}
+/* ---- PDF download (loads jsPDF + builder on first use) ---- */
+function loadScript(src){return new Promise((res,rej)=>{if(document.querySelector(`script[src="${src}"]`))return res();const t=document.createElement("script");t.src=src;t.onload=res;t.onerror=()=>rej(new Error("Couldn't load the PDF tools."));document.head.appendChild(t)})}
+async function downloadPDF(btn,data,fetchPhotos){
+  const label=btn.textContent;btn.disabled=true;btn.textContent="Building your PDF…";
+  try{await loadScript("vendor/jspdf.umd.min.js");await loadScript("playbook-pdf.js");
+    const ids=((data.answers.discover||{}).board||[]).map(b=>b&&b.photo).filter(Boolean);
+    let photos={};if(ids.length){btn.textContent="Gathering your pictures…";photos=await fetchPhotos(ids).catch(()=>({}))}
+    btn.textContent="Building your PDF…";
+    const doc=await buildPlaybookPDF({...data,photos,logo:document.querySelector(".logo").src});
+    doc.save(`${String(data.me.name||"My").replace(/[^\w]+/g,"-")}-Personal-Brand-Playbook.pdf`);toast("PDF downloaded")}
+  catch(e){toast("Couldn't build the PDF: "+e.message)}
+  btn.disabled=false;btn.textContent=label}
 
 /* ================= HOST VIEW ================= */
 let H=null,present=false;
@@ -463,7 +542,7 @@ async function renderHost(){
    ${H.athletes.length?`<div style="overflow-x:auto"><table><thead><tr><th>Athlete</th>${SESSIONS.map(s=>`<th class="hide-sm">${s.name}</th>`).join("")}<th>Documents</th></tr></thead><tbody>
    ${H.athletes.map(a=>`<tr><td><b>${esc(a.name)}</b><div class="status">${esc(a.sport)} · ${esc(a.school)}${(a.instagram||a.tiktok)?"<br>"+handleLinks(a):""}<br>${a.lastActive?"Active "+new Date(a.lastActive).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"}):""}</div></td>
      ${SESSIONS.map(s=>`<td class="hide-sm">${(a.progress||{})[s.id]||0} / ${sessionCount(s.id)}</td>`).join("")}
-     <td><div class="mat">${MATERIALS.map(([k,t])=>`<div class="m">${a.materials[k]?`<a href="${esc(a.materials[k])}" target="_blank">${t} ✓</a>`:`<span class="status">${t}</span>`}
+     <td><div class="mat"><div class="m"><button class="btn sm" data-pdf="${esc(a.id)}">Playbook PDF</button></div>${MATERIALS.map(([k,t])=>`<div class="m">${a.materials[k]?`<a href="${esc(a.materials[k])}" target="_blank">${t} ✓</a>`:`<span class="status">${t}</span>`}
        <label class="btn sm ghost" style="margin:0">Upload<input type="file" hidden data-mat="${k}" data-a="${esc(a.id)}"></label><button class="linkbtn" data-link="${k}" data-a="${esc(a.id)}">or paste link</button></div>`).join("")}</div></td></tr>`).join("")}
    </tbody></table></div>`:`<div class="empty">No one has joined yet. Share the site link (without ?host=…).</div>`}</section>
   <section class="card"><h2>Group wall</h2><p class="hint">Hide anything that shouldn't be on screen. Hidden posts stay in the Sheet.</p>${H.wall.length?`<div class="wall">${H.wall.map(p=>postHTML(p,{host:true})).join("")}</div>`:`<div class="empty">Nothing shared yet.</div>`}</section>`;
@@ -473,6 +552,8 @@ async function renderHost(){
   document.querySelectorAll("[data-mat]").forEach(inp=>inp.onchange=async()=>{const f=inp.files[0];if(!f)return;if(f.size>15e6){toast("15 MB max");return}
     toast("Uploading…");const url=await new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.readAsDataURL(f)});
     try{await api("hostSetMaterial",hostKey,inp.dataset.a,inp.dataset.mat,url,f.name,"");toast("Uploaded");renderHost()}catch(e){toast(e.message)}});
+  document.querySelectorAll("[data-pdf]").forEach(b=>b.onclick=async()=>{try{const r=await api("hostAthlete",hostKey,b.dataset.pdf);
+    await downloadPDF(b,{me:r.athlete,answers:r.answers||{}},ids=>api("hostPhotos",hostKey,ids))}catch(e){toast(e.message)}});
   document.querySelectorAll("[data-link]").forEach(b=>b.onclick=async()=>{const l=prompt("Paste a Google Drive or other link");if(!l)return;await api("hostSetMaterial",hostKey,b.dataset.a,b.dataset.link,"","",l);renderHost()});
 }
 let presTimer=null;
